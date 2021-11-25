@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -67,7 +68,6 @@ class MonthAdapter(val onDaySelectStateListener: OnDaySelectStateListener) : Rec
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val calculateHeight = parent.height / CALENDAR_COLUMN_SIZE
-
         return Holder(ItemMonthCellBinding.inflate(LayoutInflater.from(parent.context), parent, false), calculateHeight)
     }
 
@@ -76,7 +76,6 @@ class MonthAdapter(val onDaySelectStateListener: OnDaySelectStateListener) : Rec
     }
 
     override fun getItemCount(): Int = currentList.size
-
 
     inner class Holder(private val binding: ItemMonthCellBinding, private val calculateHeight: Int) :
         RecyclerView.ViewHolder(binding.root) {
@@ -185,14 +184,16 @@ class MonthAdapter(val onDaySelectStateListener: OnDaySelectStateListener) : Rec
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             layoutParams.setMargins(context().dp2px(startMargin).toInt(), 0, 0, context().dp2px(2.0f).toInt())
+            layoutParams.weight = 1f
             textView.includeFontPadding = false
             textView.isSingleLine = true
             textView.layoutParams = layoutParams
             textView.gravity = Gravity.CENTER_VERTICAL
             textView.maxLines = 1
             textView.ellipsize = TextUtils.TruncateAt.END
-            val textSize = calculateHeight / SCHEDULE_HEIGHT_DIVIDE_RATIO
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+            val textSize = binding.layoutMonthSchedule.height / calendarDesign.visibleScheduleCount
+
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, calendarDesign.textSize)
             textView.setPadding(context().dp2px(2.0f).toInt(), 0, 0, context().dp2px(2.0f).toInt())
             return textView
         }
