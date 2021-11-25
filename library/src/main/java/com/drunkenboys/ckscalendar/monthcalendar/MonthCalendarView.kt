@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -49,6 +50,7 @@ class MonthCalendarView @JvmOverloads constructor(
     private val today = LocalDate.now()
 
     private var hasRestore = false
+    private var isDefaultLast = true
     private var lastPagePosition = -1
     private var lastPageName = ""
 
@@ -112,13 +114,13 @@ class MonthCalendarView @JvmOverloads constructor(
         pageAdapter.setItems(calendarList, false)
         binding.tvMonthCalendarViewCurrentMonth.text = calendarList.first().name
         hasRestore = false
+        isDefaultLast = false
     }
 
     fun setupDefaultCalendarSet() {
         calendarList = CalendarSet.generateCalendarOfYear(context, today.year)
         pageAdapter.setItems(calendarList, true)
-
-        if (hasRestore) {
+        if (hasRestore && isDefaultLast) {
             hasRestore = false
             binding.vpMonthPage.setCurrentItem(lastPagePosition, false)
             binding.tvMonthCalendarViewCurrentMonth.text = lastPageName
@@ -132,6 +134,7 @@ class MonthCalendarView @JvmOverloads constructor(
                 }
             }
         }
+        isDefaultLast = true
     }
 
     fun setOnDayClickListener(onDayClickListener: OnDayClickListener) {
