@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 class MonthState(
     val parcelable: Parcelable,
     val lastPageName: String = "",
-    val lastPagePosition: Int = -1
+    val lastPagePosition: Int = -1,
+    val isDefaultLast: Boolean = true
 ) : View.BaseSavedState(parcelable) {
 }

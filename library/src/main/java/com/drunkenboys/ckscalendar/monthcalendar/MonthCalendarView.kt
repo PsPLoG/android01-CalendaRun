@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -172,7 +171,7 @@ class MonthCalendarView @JvmOverloads constructor(
 
     override fun onSaveInstanceState(): Parcelable? {
         val parcelable = super.onSaveInstanceState() ?: return null
-        return MonthState(parcelable, lastPageName, lastPagePosition)
+        return MonthState(parcelable, lastPageName, lastPagePosition, isDefaultLast)
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
@@ -181,7 +180,7 @@ class MonthCalendarView @JvmOverloads constructor(
                 super.onRestoreInstanceState(state.superState)
                 lastPagePosition = state.lastPagePosition
                 lastPageName = state.lastPageName
-                hasRestore = true
+                hasRestore = state.isDefaultLast
             }
             else -> super.onRestoreInstanceState(state)
         }
